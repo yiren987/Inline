@@ -20,6 +20,8 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 
+//variable events holds dummy data
+//only for testing
 const events = [
     {
         title:"ctp presentation",
@@ -28,12 +30,12 @@ const events = [
         end: new Date(2022,10,4)
     },
 ]
+//this is the core of the calendar, builds the calendar and also adds new events onto the calendar.
 function Cal(){
     const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
     const [allEvents, setAllEvents] = useState(events);
 
     function handleAddEvent() {
-         
         setAllEvents([...allEvents, newEvent]);
     }
 
@@ -41,7 +43,7 @@ function Cal(){
         <div className="App">
             <h1>Calendar</h1>
             <h2>Add New Event</h2>
-            <div>
+            <div class="event-input">
                 <input type="text" placeholder="Add Title" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
                 <DatePicker placeholderText="Start Date" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
                 <DatePicker placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />

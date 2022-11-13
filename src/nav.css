@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
+    font-family: "Montserrat", sans-serif;
 }
 
 .container {
@@ -31,12 +31,18 @@
     flex-direction: column;
     position: absolute;
     align-items: flex-start;
-    gap: 21px;
+    gap: 25px;
     width: 210px;
 }
 
 .appName {
     padding-bottom: 10px;
+}
+
+.navText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav ul {
@@ -48,13 +54,14 @@
 .nav a {
     color: inherit;
     text-decoration: none;
-    height: 100%;
+    /* height: 100%; */
     margin: 5px 10px;
 }
  
 .nav li {
     height: 40px;
     margin: 2px;
+    display: flex;
 }
 
 .nav li.active {
@@ -87,8 +94,68 @@
     justify-content: end;
 }
 
-.userAvatar {
-    /* margin-left: 100px; */
+/* dropdown reference: https://www.youtube.com/watch?v=S-VeYcOCFZw */
+.link{
+    background: none;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    color: gray;
+}
+
+/* for any link direct child, when focus, apply this color */
+/* .dropdown > .link:focus,
+.link:hover {
+    color: black;
+}  */
+
+.dropdown.active > .link,
+.link:hover {
+    color: black;
+} 
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + .25rem);
+    background-color: white;
+    padding: .75rem;
+    border-radius: .25rem;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dropdown-menu > a {
+    text-decoration: none;
+    color: gray;
+}
+
+.dropdown-menu > a:hover {
+    color: black;
+}
+
+/* link inside the dropdown, dropdown-menu after the link */
+/* .dropdown > .link:focus + .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+
+} */
+.dropdown.active > .link + .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+
 }
 
 .circle-img {

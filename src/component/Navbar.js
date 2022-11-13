@@ -13,24 +13,24 @@ export default function Navbar() {
           Application Name
         </Link>
         <ul>
-          <CustomeLink to="/">
+          <CustomeLink to="/" className="navText">
             <HomeIcon className="icon" />
             Dashboard
           </CustomeLink>
-          <CustomeLink to="/schedule">
+          <CustomeLink to="/schedule" className="navText">
             <DateRangeIcon className="icon" />
             Schedule
           </CustomeLink>
 
-          <CustomeLink to="/friends">
+          <CustomeLink to="/friends" className="navText">
             <Diversity1Icon className="icon" />
             Friends
           </CustomeLink>
-          <CustomeLink to="/tasks">
+          <CustomeLink to="/tasks" className="navText">
             <ListAltIcon className="icon" />
             Tasks
           </CustomeLink>
-          <CustomeLink to="/account">
+          <CustomeLink to="/account" className="navText">
             <AccountCircleIcon className="icon" />
             Account
           </CustomeLink>

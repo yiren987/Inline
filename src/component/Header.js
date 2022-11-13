@@ -1,7 +1,7 @@
 import React from "react";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Dropdown from "./HeaderDropdown";
 
 export default function Heading() {
   const date = new Date();
@@ -31,15 +31,13 @@ export default function Heading() {
         <img
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           alt="avatar"
-          className="circle-img userAvatar"
+          className="circle-img"
         />
         <div>
           <p>User Name</p>
           <p style={{ color: "gray" }}>{today}</p>
         </div>
-        <div>
-          <ArrowDropDownIcon className="icon" />
-        </div>
+        <Dropdown />
       </div>
     </div>
   );

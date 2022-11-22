@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
-import GlobalContext from "../Context/GlobalContext";
-import { getMonth } from "../Calendar/CalendarUtil";
+import GlobalContext from "../context/GlobalContext";
+import { getMonth } from "../util";
 
 export default function SmallCalendar() {
   const [currentMonthIdx, setCurrentMonthIdx] = useState(

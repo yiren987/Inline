@@ -4,22 +4,27 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 export default function Dropdown() {
   //  dropdown reference: https://www.youtube.com/watch?v=S-VeYcOCFZw
 
+  document.addEventListener("click", handleClick);
   function handleClick(e) {
-    // const isDropdown = e.target.matches("[data-dropdown-button]");
-    const isDropdown = e.target;
+    const isDropdown = e.target.matches("[data-dropdown-button]");
     if (!isDropdown && e.target.closest("[data-dropdown]") != null) return;
 
-    let currentDrowdown;
+    let currentDropdown;
     if (isDropdown) {
-      currentDrowdown = e.target.closest("[data-dropdown]");
-      currentDrowdown.classList.toggle("active");
+      currentDropdown = e.target.closest("[data-dropdown]");
+      currentDropdown.classList.toggle("active");
     }
+
+    document.querySelectorAll("[data-dropdown].active").forEach((dropdown) => {
+      if (dropdown === currentDropdown) return;
+      dropdown.classList.remove("active");
+    });
   }
 
   return (
-    <div className="dropdown" data-dropdown>
-      <button className="link" data-dropdown-button onClick={handleClick}>
-        <ArrowDropDownIcon className="icon" />
+    <div className="dropdown" data-dropdown onClick={handleClick}>
+      <button className="link">
+        <ArrowDropDownIcon className="icon" data-dropdown-button />
       </button>
       <div className="dropdown-menu">
         <a href="/#">Profile</a>

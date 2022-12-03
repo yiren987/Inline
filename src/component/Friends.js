@@ -11,6 +11,7 @@ function createCard(contact) {
       img={contact.imgURL}
       email={contact.email}
       tel={contact.phone}
+      profile={contact.profileURL}
     />
   );
 }
@@ -18,7 +19,7 @@ function createCard(contact) {
 function Friends() {
   return (
     <>
-      <h1>Friends</h1>
+      <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
       {contacts.map(createCard)}
     </>
   );

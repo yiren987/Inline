@@ -2,6 +2,10 @@ import React from "react";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import Dropdown from "./HeaderDropdown";
+import SortIcon from "@mui/icons-material/Sort";
+// import { storage } from "../firebase";
+
+// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default function Heading() {
   const date = new Date();
@@ -23,7 +27,10 @@ export default function Heading() {
 
   return (
     <div className="heading">
-      <h1>{greeting}</h1>
+      <div className="headingGreeting">
+        <SortIcon />
+        <h1>{greeting}</h1>
+      </div>
       <div className="headingNav">
         <NotificationsNoneIcon className="icon" />
         <MailOutlinedIcon className="icon" />

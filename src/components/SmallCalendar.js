@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
-import GlobalContext from "../context/GlobalContext";
+import GlobalContext from "./GlobalContext";
 import { getMonth } from "../util";
 
 export default function SmallCalendar() {
@@ -45,20 +45,20 @@ export default function SmallCalendar() {
   return (
     <div className="mt-9">
       <header className="flex justify-between">
-        <p className="text-gray-500 font-bold">
+        <p className="text-black-500 font-bold">
           {dayjs(new Date(dayjs().year(), currentMonthIdx)).format(
             "MMMM YYYY"
           )}
         </p>
         <div>
           <button onClick={handlePrevMonth}>
-            <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
-              chevron_left
+            <span className="material-icons-outlined cursor-pointer text-black-600 mx-2 font-bold">
+              ←
             </span>
           </button>
           <button onClick={handleNextMonth}>
-            <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
-              chevron_right
+            <span className="material-icons-outlined cursor-pointer text-black-600 mx-2 font-bold">
+              →
             </span>
           </button>
         </div>

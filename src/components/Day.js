@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import React, { useContext, useState, useEffect } from "react";
-import GlobalContext from "../context/GlobalContext";
+import GlobalContext from "./GlobalContext";
 
 export default function Day({ day, rowIdx }) {
   const [dayEvents, setDayEvents] = useState([]);

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import ContextWrapper from "./context/ContextWrapper";
+import ContextWrapper from "./components/ContextWrapper";
 ReactDOM.render(
   <ContextWrapper>
     <App />

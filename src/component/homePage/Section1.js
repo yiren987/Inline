@@ -8,7 +8,7 @@ export const Section1 = () => {
           <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
             <div data-aos="zoom-out">
               <h1>
-                Build Your own schedule with <span>Scheduler</span>
+                Build Your own schedule with <span>Inline Scheduler</span>
               </h1>
               <h2>
                 Scheduler create a reliable way to keep track of your own free

@@ -25,7 +25,7 @@ button {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
-  color: #34e5a6;
+  /* color: #34e5a6; */
   text-decoration: none;
 }
 
@@ -113,7 +113,7 @@ button {
   color: #fff;
 }
 
-button {
+.navHeader button {
   margin-left: 20px;
   padding: 9px 25px;
   background-color: rgba(0, 136, 169, 1);
@@ -194,6 +194,11 @@ button:hover {
 @media (min-width: 1024px) {
   #hero {
     background-attachment: fixed;
+  }
+
+  #hero .iphone-calendar img {
+    /* max-width: 60%; */
+    border-radius: 10%;
   }
 }
 

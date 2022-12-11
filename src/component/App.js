@@ -3,9 +3,11 @@ import Friends from "./Friends";
 import Navbar from "./Navbar";
 import Home from "./Home";
 import Heading from "./Header";
-import "../nav.css";
+import {HomePage} from "./homePage/HomePage";
 import { Route, Routes } from "react-router-dom";
 import Calendar from "./calendar/Calendar";
+import "../home.css";
+import "../nav.css";
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         </Routes>
       </div>
       {/* <Calendar /> */}
+      {/* <HomePage /> */}
     </>
   );
 }

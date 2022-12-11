@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -24,7 +25,7 @@ export const Section2 = () => {
                 <EventNoteIcon />
               </div>
               <h4 class="title">
-                <p>Functional scheduler</p>
+              <Link to= "/Scheduler">Functional scheduler</Link>
               </h4>
               <p class="description">
                 You will have the abilities to view tasks and able to label

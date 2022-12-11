@@ -10,6 +10,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "craco": "^0.0.3",
+    "dayjs": "^1.11.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
@@ -17,9 +19,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,5 +41,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.0.0",
+    "@tailwindcss/forms": "^0.3.3",
+    "autoprefixer": "^9",
+    "postcss": "^8.1.9",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   }
 }

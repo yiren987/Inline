@@ -5,18 +5,21 @@
   font-family: "Montserrat", sans-serif;
 }
 
-.container {
+p {
+  margin: 0;
+}
+
+.containers {
   margin-left: 240px;
   background: linear-gradient(180deg, #8cc8db 0%, rgba(140, 200, 219, 0) 100%);
   border-radius: 6px;
   height: 85vh;
   overflow-y: scroll;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.container::-webkit-scrollbar {
-  /* WebKit */
+.containers::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
@@ -52,6 +55,10 @@
 
 .appName {
   padding-bottom: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #fff;
+  font-style: italic;
 }
 
 .navText {
@@ -104,6 +111,7 @@
   position: sticky;
   top: 0;
   background-color: white;
+  z-index: 1;
 }
 
 .headingGreeting {
@@ -129,16 +137,16 @@
 }
 
 /* for any link direct child, when focus, apply this color */
-.dropdown.active > .link,
+.dropdowns.active > .link,
 .link:hover {
   color: black;
 }
 
-.dropdown {
+.dropdowns {
   position: relative;
 }
 
-.dropdown-menu {
+.dropdowns-menu {
   position: absolute;
   right: 0;
   top: calc(100% + 0.25rem);
@@ -155,17 +163,17 @@
   gap: 5px;
 }
 
-.dropdown-menu > a {
+.dropdowns-menu > a {
   text-decoration: none;
   color: gray;
 }
 
-.dropdown-menu > a:hover {
+.dropdowns-menu > a:hover {
   color: black;
 }
 
 /* link inside the dropdown, dropdown-menu after the link */
-.dropdown.active > .link + .dropdown-menu {
+.dropdowns.active > .link + .dropdowns-menu {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;

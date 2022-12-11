@@ -22,11 +22,11 @@ export default function Dropdown() {
   }
 
   return (
-    <div className="dropdown" data-dropdown onClick={handleClick}>
+    <div className="dropdowns" data-dropdown onClick={handleClick}>
       <button className="link">
         <ArrowDropDownIcon className="icon" data-dropdown-button />
       </button>
-      <div className="dropdown-menu">
+      <div className="dropdowns-menu">
         <a href="/#">Profile</a>
         <a href="/#">Profile</a>
         <a href="/#">Profile</a>

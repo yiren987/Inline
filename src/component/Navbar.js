@@ -10,7 +10,7 @@ export default function Navbar() {
     <div className="leftContainer">
       <nav className="nav">
         <Link to="/" className="appName">
-          Application Name
+          Inline
         </Link>
         <ul>
           <CustomeLink to="/" className="navText">

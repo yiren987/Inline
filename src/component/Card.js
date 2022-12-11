@@ -6,7 +6,14 @@ function Card(props) {
     <div className="card">
       <div className="friendList">
         <Avatar img={props.img} />
-        <p className="name">{props.name}</p>
+        <a
+          className="name"
+          href={props.profile}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          {props.name}
+        </a>
       </div>
     </div>
   );

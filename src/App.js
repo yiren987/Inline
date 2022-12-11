@@ -5,11 +5,10 @@ import Calendar from "./component/Scheduler/Calendar";
 
 function App() {
   return (
-    <Calendar/>
-      // <Routes>
-      //    <Route exact path="/" element={<HomePage />} /> 
-      //    <Route  path="/Scheduler" element={<Calendar/>} />
-      //   </Routes>
+      <Routes>
+         <Route exact path="/" element={<HomePage />} /> 
+         <Route  path="/Scheduler" element={<Calendar/>} />
+      </Routes>
   );
 }
 

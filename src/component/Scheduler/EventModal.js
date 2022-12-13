@@ -35,10 +35,10 @@ export default function EventModal() {
     setShowEventModal(false);
   }
   return (
-    <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
-      <form className="bg-white rounded-lg shadow-2xl w-1/4">
-        <header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
-          <span className="material-icons-outlined text-gray-400">
+    <div className="tw-h-screen tw-w-full tw-fixed tw-left-0 tw-top-0 tw-flex tw-justify-center tw-items-center">
+      <form className="tw-bg-white tw-rounded-lg tw-shadow-2xl tw-w-1/4">
+        <header className="tw-bg-gray-100 tw-px-4 tw-py-2 tw-flex tw-justify-between tw-items-center">
+          <span className="tw-material-icons-outlined tw-text-gray-400">
             Event
           </span>
           <div>
@@ -51,20 +51,20 @@ export default function EventModal() {
                   });
                   setShowEventModal(false);
                 }}
-                className="material-icons-outlined text-gray-400 cursor-pointer"
+                className="tw-material-icons-outlined tw-text-gray-400 tw-cursor-pointer"
               >
                 delete
               </span>
             )}
             <button onClick={() => setShowEventModal(false)}>
-              <span className="material-icons-outlined text-gray-400">
+              <span className="tw-material-icons-outlined tw-text-gray-400">
                 close
               </span>
             </button>
           </div>
         </header>
-        <div className="p-3">
-          <div className="grid grid-cols-1/5 items-end gap-y-7">
+        <div className="tw-p-3">
+          <div className="tw-grid tw-grid-cols-1/5 tw-items-end tw-gap-y-7">
             <div></div>
             <input
               type="text"
@@ -72,14 +72,14 @@ export default function EventModal() {
               placeholder="Event Title"
               value={title}
               required
-              className="pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+              className="tw-pt-3 tw-border-0 tw-text-gray-600 tw-text-xl tw-font-semibold tw-pb-2 tw-w-full tw-border-b-2 tw-border-gray-200 tw-focus:outline-none tw-focus:ring-0 tw-focus:border-blue-500"
               onChange={(e) => setTitle(e.target.value)}
             />
-            <span className="material-icons-outlined text-gray-400">
+            <span className="tw-material-icons-outlined tw-text-gray-400">
               Event Date
             </span>
-            <p>{daySelected.format("dddd, MMMM DD") }</p>
-            <span className="material-icons-outlined text-gray-400">
+            <p>{daySelected.format("dddd, MMMM DD")}</p>
+            <span className="tw-material-icons-outlined tw-text-gray-400">
               Description
             </span>
             <input
@@ -88,22 +88,22 @@ export default function EventModal() {
               placeholder="Event description"
               value={description}
               required
-              className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+              className="tw-pt-3 tw-border-0 tw-text-gray-600 tw-pb-2 tw-w-full tw-border-b-2 tw-border-gray-200 tw-focus:outline-none tw-focus:ring-0 tw-focus:border-blue-500"
               onChange={(e) => setDescription(e.target.value)}
             />
-            <span className="material-icons-outlined text-gray-400">
+            <span className="tw-material-icons-outlined tw-text-gray-400">
               LabelColor
             </span>
-            <div className="flex gap-x-2">
+            <div className="tw-flex tw-gap-x-2">
               {labelsClasses.map((lblClass, i) => (
                 <span
                   key={i}
                   onClick={() => setSelectedLabel(lblClass)}
-                  className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}
+                  className={`tw-bg-${lblClass}-500 tw-w-6 tw-h-6 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer`}
                 >
                   {selectedLabel === lblClass && (
-                    <span className="material-icons-outlined text-white text-sm">
-                        ✓
+                    <span className="tw-material-icons-outlined tw-text-white tw-text-sm">
+                      ✓
                     </span>
                   )}
                 </span>
@@ -111,11 +111,12 @@ export default function EventModal() {
             </div>
           </div>
         </div>
-        <footer className="flex justify-end border-t p-3 mt-5">
+        <footer className="tw-flex tw-justify-end tw-border-t tw-p-3 tw-mt-5">
           <button
             type="submit"
             onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white">
+            className="tw-bg-blue-500 tw-hover:bg-blue-600 tw-px-6 tw-py-2 tw-rounded tw-text-white"
+          >
             Save
           </button>
         </footer>

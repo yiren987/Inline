@@ -18,9 +18,9 @@ export default function Calendar() {
     <React.Fragment>
       {showEventModal && <EventModal />}
 
-      <div className="h-screen flex flex-col">
+      <div className="tw-h-screen tw-flex tw-flex-col">
         <CalendarHeader />
-        <div className="flex flex-1">
+        <div className="tw-flex tw-flex-1">
           <Sidebar />
           <Month month={currenMonth} />
         </div>

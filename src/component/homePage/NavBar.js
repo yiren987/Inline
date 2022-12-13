@@ -23,7 +23,7 @@ export const NavBar = () => {
             </li>
           </ul>
         </nav>
-        <a className="" href="/#">
+        <a className="" href="/signup">
           <button>Sign Up</button>
         </a>
       </div>

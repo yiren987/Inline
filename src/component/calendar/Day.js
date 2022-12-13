@@ -13,33 +13,32 @@ export default function Day({ day, rowIdx }) {
 
   useEffect(() => {
     const events = filteredEvents.filter(
-      (evt) =>
-        dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
+      (evt) => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
     );
     setDayEvents(events);
   }, [filteredEvents, day]);
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
-      ? "bg-blue-600 text-white rounded-full w-7"
+      ? "tw-bg-blue-600 tw-text-white tw-rounded-full tw-w-7"
       : "";
   }
   return (
-    <div className="border border-gray-200 flex flex-col">
-      <header className="flex flex-col items-center">
+    <div className="tw-border tw-border-gray-200 tw-flex tw-flex-col">
+      <header className="tw-flex tw-flex-col tw-items-center">
         {rowIdx === 0 && (
-          <p className="text-sm mt-1">
+          <p className="tw-text-sm tw-mt-1">
             {day.format("ddd").toUpperCase()}
           </p>
         )}
         <p
-          className={`text-sm p-1 my-1 text-center  ${getCurrentDayClass()}`}
+          className={`tw-text-sm tw-p-1 tw-my-1 tw-text-center  ${getCurrentDayClass()}`}
         >
           {day.format("DD")}
         </p>
       </header>
       <div
-        className="flex-1 cursor-pointer"
+        className="tw-flex-1 tw-cursor-pointer"
         onClick={() => {
           setDaySelected(day);
           setShowEventModal(true);
@@ -49,7 +48,7 @@ export default function Day({ day, rowIdx }) {
           <div
             key={idx}
             onClick={() => setSelectedEvent(evt)}
-            className={`bg-${evt.label}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
+            className={`tw-bg-${evt.label}-200 tw-p-1 tw-mr-3 tw-text-gray-600 tw-text-sm tw-rounded tw-mb-1 tw-truncate`}
           >
             {evt.title}
           </div>

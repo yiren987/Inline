@@ -29,35 +29,35 @@ export default function SmallCalendar() {
     const currDay = day.format(format);
     const slcDay = daySelected && daySelected.format(format);
     if (nowDay === currDay) {
-      return "bg-blue-500 rounded-full text-white";
+      return "tw-bg-blue-500 tw-rounded-full tw-text-white";
     } else if (currDay === slcDay) {
-      return "bg-blue-100 rounded-full text-blue-600 font-bold";
+      return "tw-bg-blue-100 tw-rounded-full tw-text-blue-600 tw-font-bold";
     } else {
       return "";
     }
   }
   return (
-    <div className="mt-9">
-      <header className="flex justify-between">
-        <p className="text-black-500 font-bold">
+    <div className="tw-mt-9">
+      <header className="tw-flex tw-justify-between">
+        <p className="tw-text-black-500 tw-font-bold">
           {dayjs(new Date(dayjs().year(), currentMonthIdx)).format("MMMM YYYY")}
         </p>
         <div>
           <button onClick={handlePrevMonth}>
-            <span className="material-icons-outlined cursor-pointer text-black-600 mx-2 font-bold">
+            <span className="tw-material-icons-outlined tw-cursor-pointer tw-text-black-600 tw-mx-2 tw-font-bold">
               ←
             </span>
           </button>
           <button onClick={handleNextMonth}>
-            <span className="material-icons-outlined cursor-pointer text-black-600 mx-2 font-bold">
+            <span className="tw-material-icons-outlined tw-cursor-pointer tw-text-black-600 tw-mx-2 tw-font-bold">
               →
             </span>
           </button>
         </div>
       </header>
-      <div className="grid grid-cols-7 grid-rows-6">
+      <div className="tw-grid tw-grid-cols-7 tw-grid-rows-6">
         {currentMonth[0].map((day, i) => (
-          <span key={i} className="text-sm py-1 text-center">
+          <span key={i} className="tw-text-sm tw-py-1 tw-text-center">
             {day.format("dd").charAt(0)}
           </span>
         ))}
@@ -70,9 +70,9 @@ export default function SmallCalendar() {
                   setSmallCalendarMonth(currentMonthIdx);
                   setDaySelected(day);
                 }}
-                className={`py-1 w-full ${getDayClass(day)}`}
+                className={`tw-py-1 tw-w-full ${getDayClass(day)}`}
               >
-                <span className="text-sm">{day.format("D")}</span>
+                <span className="tw-text-sm">{day.format("D")}</span>
               </button>
             ))}
           </React.Fragment>

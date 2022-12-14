@@ -22,7 +22,9 @@ export default function Calendar() {
       {showEventModal && <EventModal />}
 
       <div className="tw-h-screen tw-flex tw-flex-col calendar">
-        <CalendarHeader />
+        <div className="header-container">
+          <CalendarHeader />
+        </div>
         <div className="tw-flex tw-flex-1">
           <Sidebar />
           <Month month={currenMonth} />

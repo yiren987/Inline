@@ -8,6 +8,7 @@ import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
 import UpdateProfile from "./UpdateProfile";
+import Calendar from "../calendar/Calendar";
 import { HomePage } from "../homePage/HomePage";
 
 /*               <PrivateRoute path="/update-profile" element={UpdateProfile} />
@@ -17,7 +18,7 @@ function SignPage() {
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
+
     >
       <div>
         <AuthProvider>

@@ -14,11 +14,11 @@ export default function Navbar() {
           Inline
         </Link>
         <ul>
-          <CustomeLink to="/" className="navText">
+          <CustomeLink to="/dashboard" className="navText">
             <HomeIcon className="icon" />
             Dashboard
           </CustomeLink>
-          <CustomeLink to="/schedule" className="navText">
+          <CustomeLink to="/Schedule" className="navText">
             <DateRangeIcon className="icon" />
             Schedule
           </CustomeLink>

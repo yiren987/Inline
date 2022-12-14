@@ -13,6 +13,7 @@ function App() {
       
       <SignPage />
       <Routes>
+        <Route  path="/dashboard" element={<NavMain/>} />
         <Route  path="/Schedule" element={<Calendar/>} />
       </Routes>
       

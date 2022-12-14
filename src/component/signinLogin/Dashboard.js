@@ -3,6 +3,7 @@ import { Card, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { NavMain } from "../main/NavMain";
+import { Route,Routes } from "react-router-dom";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -22,7 +23,10 @@ export default function Dashboard() {
 
   return (
     <>
-      <NavMain />
+      <Routes>
+        <Route path="/dashboard" element={<NavMain />}></Route>
+      </Routes>
+     {/* <NavMain /> */}
       {/* <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>

@@ -5,6 +5,8 @@ import Sidebar from "./Sidebar";
 import Month from "./Month";
 import GlobalContext from "./GlobalContext";
 import EventModal from "./EventModal";
+import { NavBar } from "../homePage/NavBar";
+import "./styles/calendar.css"
 
 export default function Calendar() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
@@ -16,9 +18,10 @@ export default function Calendar() {
 
   return (
     <React.Fragment>
+      <NavBar />
       {showEventModal && <EventModal />}
 
-      <div className="tw-h-screen tw-flex tw-flex-col">
+      <div className="tw-h-screen tw-flex tw-flex-col calendar">
         <CalendarHeader />
         <div className="tw-flex tw-flex-1">
           <Sidebar />

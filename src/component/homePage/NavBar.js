@@ -23,8 +23,8 @@ export const NavBar = () => {
             </li>
           </ul>
         </nav>
-        <a className="" href="/signup">
-          <button>Sign Up</button>
+        <a className="" href="/login">
+          <button>Sign In</button>
         </a>
       </div>
     </div>

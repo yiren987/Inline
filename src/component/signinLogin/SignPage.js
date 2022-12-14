@@ -61,12 +61,7 @@ function SignPage() {
               className="w-100"
               style={{ maxWidth: "400px" }}
             />
-            <Route
-              path="/"
-              element={<HomePage />}
-              className="w-100"
-              style={{ maxWidth: "400px" }}
-            />
+            
           </Routes>
         </AuthProvider>
       </div>

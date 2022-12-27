@@ -25,7 +25,6 @@ button {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
-  /* color: #34e5a6; */
   text-decoration: none;
 }
 
@@ -68,6 +67,10 @@ button {
   position: relative;
 }
 
+.navbar .nav_links li a{
+  transition: all 0.3s ease;
+}
+
 .navbar a,
 .navbar a:focus {
   display: flex;
@@ -89,7 +92,7 @@ button {
   margin-left: 5px;
 }
 
-.navbar > ul > li > a:before {
+.navbar ul li a::before {
   content: "";
   position: absolute;
   width: 0;
@@ -102,13 +105,16 @@ button {
   transition: all 0.3s ease-in-out 0s;
 }
 
-.navbar a:hover:before,
-.navbar li:hover > a:before {
+.navbar a:hover::before,
+.navbar li:hover > a::before,
+.navbar .active::before {
   visibility: visible;
   width: 25px;
 }
 
 .navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
 .navbar li:hover > a {
   color: #fff;
 }
@@ -127,7 +133,7 @@ button:hover {
   background-color: rgba(0, 136, 169, 0.8);
 }
 
-#hero {
+#services {
   width: 100%;
   background: url("../public/img/hero-bg.jpg");
   position: relative;
@@ -135,7 +141,7 @@ button:hover {
   height: 100vh;
 }
 
-#hero:before {
+#services::before {
   content: "";
   background: rgba(2, 5, 161, 0.91);
   position: absolute;
@@ -145,7 +151,7 @@ button:hover {
   right: 0;
 }
 
-#hero h1 {
+#services h1 {
   margin: 0 0 20px 0;
   font-size: 48px;
   font-weight: 700;
@@ -153,18 +159,18 @@ button:hover {
   color: rgba(255, 255, 255, 0.8);
 }
 
-#hero h1 span {
+#services h1 span {
   color: #fff;
   border-bottom: 4px solid #1acc8d;
 }
 
-#hero h2 {
+#services h2 {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 40px;
   font-size: 24px;
 }
 
-#hero .btn-get-started {
+#services .btn-get-started {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -177,7 +183,7 @@ button:hover {
   background: #1acc8d;
 }
 
-#hero .btn-get-started:hover {
+#services .btn-get-started:hover {
   background: #17b57d;
 }
 
@@ -187,55 +193,61 @@ button:hover {
   border-radius: 30px;
 }
 
-#hero .animated {
+#services .animated {
   animation: up-down 2s ease-in-out infinite alternate-reverse both;
 }
 
 @media (min-width: 1024px) {
-  #hero {
+  #services {
     background-attachment: fixed;
   }
 
-  #hero .iphone-calendar img {
+  #services .iphone-calendar img {
     /* max-width: 60%; */
     border-radius: 10%;
   }
 }
 
 @media (max-width: 991px) {
-  #hero {
+  #services {
     padding-top: 80px;
   }
 
-  #hero .animated {
+  #services .animated {
     -webkit-animation: none;
     animation: none;
   }
 
-  #hero .iphone-calendar {
+  #services .iphone-calendar {
+    display: flex;
     text-align: center;
+    justify-content: center;
   }
 
-  #hero .iphone-calendar img {
+  #services .iphone-calendar img {
     max-width: 30%;
     border-radius: 10%;
   }
 
-  #hero h1 {
+  #services h1 {
     font-size: 28px;
     line-height: 32px;
     margin-bottom: 10px;
   }
 
-  #hero h2 {
+  #services h2 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
   }
+
+  #about {
+    height: auto;
+  }
 }
 
 @media (max-width: 575px) {
-  #hero .iphone-calendar img {
+  #services .iphone-calendar img {
     width: 80%;
     border-radius: 10%;
   }
@@ -261,20 +273,20 @@ button:hover {
   }
 }
 
-#hero h1 {
+#services h1 {
   font-size: 28px;
   line-height: 32px;
   margin-bottom: 10px;
 }
 
-#hero h2 {
+#services h2 {
   font-size: 18px;
   line-height: 24px;
   margin-bottom: 30px;
 }
 
 @media (max-width: 575px) {
-  #hero .iphone-calendar img {
+  #services .iphone-calendar img {
     width: 80%;
   }
 }
@@ -283,13 +295,18 @@ button:hover {
 # About
 --------------------------------------------------------------*/
 .about {
-  padding: 40px 0 0 0;
+  padding-top: 100px;
+  height: 100vh;
+}
+
+.about .container-fluid {
+  height: 100%;
 }
 
 .about .img-boxes {
   background: url("../public/img/calendar.png") center center no-repeat;
   background-size: contain;
-  min-height: 300px;
+  min-height: 350px;
 }
 
 .about .icon-boxes h3 {
@@ -351,28 +368,4 @@ button:hover {
   margin-left: 85px;
   line-height: 24px;
   font-size: 14px;
-}
-
-@-webkit-keyframes pulsate-btn {
-  0% {
-    transform: scale(0.6, 0.6);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(1, 1);
-    opacity: 0;
-  }
-}
-
-@keyframes pulsate-btn {
-  0% {
-    transform: scale(0.6, 0.6);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(1, 1);
-    opacity: 0;
-  }
 }

@@ -6,7 +6,7 @@ import { NavMain } from "./main/NavMain";
 import Calendar from "./calendar/Calendar";
 import { Route, Routes } from "react-router-dom";
 import { HomePage } from "./homePage/HomePage";
-import PrivateRoutes from "../contexts/PrivateRouting";
+import Friends from "./main/Friends";
 
 function App() {
   return (
@@ -16,11 +16,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<NavMain />} />
         <Route path="/Schedule" element={<Calendar />} />
+        <Route path="/friends" element={<Friends />} />
       </Routes>
-
-      {/* <NavMain /> */}
-      {/* <Calendar /> */}
-      {/* <HomePage /> */}
     </>
   );
 }

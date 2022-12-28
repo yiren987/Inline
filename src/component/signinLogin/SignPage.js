@@ -11,6 +11,9 @@ import UpdateProfile from "./UpdateProfile";
 import Friends from "../main/Friends";
 import { HomePage } from "../homePage/HomePage";
 import Calendar from "../calendar/Calendar";
+import { Profile } from "../main/Profile";
+import { Account } from "../main/Account";
+import { Tasks } from "../main/Tasks";
 
 function SignPage() {
   return (
@@ -69,6 +72,30 @@ function SignPage() {
             element={
               <PrivateRoute>
                 <Calendar />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/account"
+            element={
+              <PrivateRoute>
+                <Account />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/tasks"
+            element={
+              <PrivateRoute>
+                <Tasks />
               </PrivateRoute>
             }
           ></Route>

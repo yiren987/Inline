@@ -26,20 +26,20 @@ export default function Heading() {
     greeting = "Good Night";
   }
 
-  // const [error, setError] = useState("");
-  // const { currentUser, logout } = useAuth();
-  // const history = useNavigate();
+  const [error, setError] = useState("");
+  const { currentUser, logout } = useAuth();
+  const history = useNavigate();
 
-  // async function handleLogout() {
-  //   setError("");
+  async function handleLogout() {
+    setError("");
 
-  //   try {
-  //     await logout();
-  //     history.push("/login");
-  //   } catch {
-  //     setError("Failed to log out");
-  //   }
-  // }
+    try {
+      await logout();
+      history.push("/login");
+    } catch {
+      setError("Failed to log out");
+    }
+  }
 
   return (
     <div className="heading">
@@ -54,14 +54,20 @@ export default function Heading() {
         <img
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           alt="avatar"
-          className="circle-img"
+          className="circle-img user-img"
         />
         <div>
           <p>User Name</p>
           <p style={{ color: "gray" }}>{today}</p>
         </div>
         <Dropdown />
-        {/* <Button onClick={handleLogout}></Button> */}
+        <Button
+          className="btn btn-primary"
+          variant="link"
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ export default function Dropdown() {
         <ArrowDropDownIcon className="icon" data-dropdown-button />
       </button>
       <div className="dropdowns-menu">
-        <a href="/#">Profile</a>
+        <a href="/update-profile">Update Profile</a>
         <a href="/#">Profile</a>
         <a href="/#">Profile</a>
       </div>

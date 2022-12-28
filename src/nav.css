@@ -67,6 +67,10 @@ p {
   font-style: italic;
 }
 
+.user-img {
+  cursor: pointer;
+}
+
 .navText {
   display: flex;
   align-items: center;

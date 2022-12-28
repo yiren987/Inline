@@ -12,12 +12,12 @@ function App() {
   return (
     <>
       <SignPage />
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<NavMain />} />
         <Route path="/Schedule" element={<Calendar />} />
         <Route path="/friends" element={<Friends />} />
-      </Routes>
+      </Routes> */}
     </>
   );
 }

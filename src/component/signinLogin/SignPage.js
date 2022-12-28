@@ -8,58 +8,73 @@ import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
 import UpdateProfile from "./UpdateProfile";
-
-/*               <PrivateRoute path="/update-profile" element={UpdateProfile} />
- */
+import Friends from "../main/Friends";
+import { HomePage } from "../homePage/HomePage";
+import Calendar from "../calendar/Calendar";
 
 function SignPage() {
   return (
-    <Container className="d-flex align-items-center justify-content-center">
-      <div>
-        <AuthProvider>
-          <Routes>
-            <Route
-              path="/dashboard/*"
-              className="w-100"
-              style={{ maxWidth: "400px" }}
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route
-              path="/update-profile"
-              className="w-100"
-              style={{ maxWidth: "400px" }}
-              element={
-                <PrivateRoute>
-                  <UpdateProfile />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route
-              path="/signup"
-              element={<Signup />}
-              className="w-100"
-              style={{ maxWidth: "400px" }}
-            />
-            <Route
-              path="/login"
-              element={<Login />}
-              className="w-100"
-              style={{ maxWidth: "400px" }}
-            />
-            <Route
-              path="/forgot-password"
-              element={<ForgotPassword />}
-              className="w-100"
-              style={{ maxWidth: "400px" }}
-            />
-          </Routes>
-        </AuthProvider>
-      </div>
-    </Container>
+    <div>
+      <AuthProvider>
+        <Routes>
+          <Route
+            path="/dashboard/*"
+            className="w-100"
+            style={{ maxWidth: "400px" }}
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/update-profile"
+            className="w-100"
+            style={{ maxWidth: "400px" }}
+            element={
+              <PrivateRoute>
+                <UpdateProfile />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/signup"
+            element={<Signup />}
+            className="w-100"
+            style={{ maxWidth: "400px" }}
+          />
+          <Route
+            path="/login"
+            element={<Login />}
+            className="w-100"
+            style={{ maxWidth: "400px" }}
+          />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+            className="w-100"
+            style={{ maxWidth: "400px" }}
+          />
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/friends"
+            element={
+              <PrivateRoute>
+                <Friends />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/schedule"
+            element={
+              <PrivateRoute>
+                <Calendar />
+              </PrivateRoute>
+            }
+          ></Route>
+        </Routes>
+      </AuthProvider>
+    </div>
   );
 }
 

@@ -3,9 +3,10 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import Dropdown from "./HeaderDropdown";
 import SortIcon from "@mui/icons-material/Sort";
-// import { storage } from "../firebase";
-
-// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { Button } from "react-bootstrap";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Heading() {
   const date = new Date();
@@ -24,6 +25,21 @@ export default function Heading() {
   } else {
     greeting = "Good Night";
   }
+
+  // const [error, setError] = useState("");
+  // const { currentUser, logout } = useAuth();
+  // const history = useNavigate();
+
+  // async function handleLogout() {
+  //   setError("");
+
+  //   try {
+  //     await logout();
+  //     history.push("/login");
+  //   } catch {
+  //     setError("Failed to log out");
+  //   }
+  // }
 
   return (
     <div className="heading">
@@ -45,6 +61,7 @@ export default function Heading() {
           <p style={{ color: "gray" }}>{today}</p>
         </div>
         <Dropdown />
+        {/* <Button onClick={handleLogout}></Button> */}
       </div>
     </div>
   );

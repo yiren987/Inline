@@ -5,8 +5,10 @@ import Sidebar from "./Sidebar";
 import Month from "./Month";
 import GlobalContext from "./GlobalContext";
 import EventModal from "./EventModal";
-import { NavBar } from "../homePage/NavBar";
-import "./styles/calendar.css"
+// import { NavBar } from "../homePage/NavBar";
+import { NavMain } from "../main/NavMain";
+import Heading from "../main/Header";
+import "./styles/calendar.css";
 
 export default function Calendar() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
@@ -18,16 +20,19 @@ export default function Calendar() {
 
   return (
     <React.Fragment>
-      <NavBar />
-      {showEventModal && <EventModal />}
+      <Heading />
+      <div className="containers padd240">
+        <NavMain />
+        {showEventModal && <EventModal />}
 
-      <div className="tw-h-screen tw-flex tw-flex-col calendar">
-        <div className="header-container">
-          <CalendarHeader />
-        </div>
-        <div className="tw-flex tw-flex-1">
-          <Sidebar />
-          <Month month={currenMonth} />
+        <div className="tw-h-screen tw-flex tw-flex-col calendar">
+          <div className="header-container">
+            <CalendarHeader />
+          </div>
+          <div className="tw-flex tw-flex-1">
+            <Sidebar />
+            <Month month={currenMonth} />
+          </div>
         </div>
       </div>
     </React.Fragment>

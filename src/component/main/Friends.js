@@ -1,6 +1,8 @@
 import React from "react";
 import Card from "./Card";
 import contacts from "../../db";
+import { NavMain } from "./NavMain";
+import Heading from "./Header";
 
 function createCard(contact) {
   return (
@@ -18,10 +20,14 @@ function createCard(contact) {
 
 function Friends() {
   return (
-    <>
-      <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
-      {contacts.map(createCard)}
-    </>
+    <div className="containers">
+      <Heading />
+      <div className="padd240">
+        <NavMain />
+        <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
+        {contacts.map(createCard)}
+      </div>
+    </div>
   );
 }
 

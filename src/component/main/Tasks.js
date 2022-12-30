@@ -1,11 +1,12 @@
-import Heading from "./Header";
+import React from "react";
 import { NavMain } from "./NavMain";
+import Heading from "./Header";
 
-export default function Home() {
+export const Tasks = () => {
   return (
     <div>
       <NavMain />
       <Heading />
     </div>
   );
-}
+};

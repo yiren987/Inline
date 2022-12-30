@@ -9,11 +9,17 @@ p {
   margin: 0;
 }
 
+.padd240 {
+  padding-left: 240px;
+  padding-top: 90px;
+}
+
+
+
 .containers {
-  margin-left: 240px;
-  background: linear-gradient(180deg, #8cc8db 0%, rgba(140, 200, 219, 0) 100%);
+  /* background: linear-gradient(180deg, #8cc8db 0%, rgba(140, 200, 219, 0) 100%); */
   border-radius: 6px;
-  height: 85vh;
+  height: 100vh;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -61,6 +67,10 @@ p {
   font-style: italic;
 }
 
+.user-img {
+  cursor: pointer;
+}
+
 .navText {
   display: flex;
   align-items: center;
@@ -103,15 +113,17 @@ p {
 }
 
 .heading {
-  margin-left: 240px;
   padding: 10px;
+  margin-left: 240px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
+  position: fixed;
+  width: -webkit-fill-available;
+  height: 90px;
   top: 0;
-  background-color: white;
-  z-index: 1;
+  background: linear-gradient(180deg, #8cc8db 0%, rgba(140, 200, 219, 0) 100%);
+  border-bottom: 1px solid #2e97ae;
 }
 
 .headingGreeting {

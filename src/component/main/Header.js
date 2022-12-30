@@ -3,9 +3,10 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import Dropdown from "./HeaderDropdown";
 import SortIcon from "@mui/icons-material/Sort";
-// import { storage } from "../firebase";
-
-// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { Button } from "react-bootstrap";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Heading() {
   const date = new Date();
@@ -25,6 +26,21 @@ export default function Heading() {
     greeting = "Good Night";
   }
 
+  const [error, setError] = useState("");
+  const { currentUser, logout } = useAuth();
+  const history = useNavigate();
+
+  async function handleLogout() {
+    setError("");
+
+    try {
+      await logout();
+      history.push("/login");
+    } catch {
+      setError("Failed to log out");
+    }
+  }
+
   return (
     <div className="heading">
       <div className="headingGreeting">
@@ -38,13 +54,20 @@ export default function Heading() {
         <img
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           alt="avatar"
-          className="circle-img"
+          className="circle-img user-img"
         />
         <div>
           <p>User Name</p>
           <p style={{ color: "gray" }}>{today}</p>
         </div>
         <Dropdown />
+        <Button
+          className="btn btn-primary"
+          variant="link"
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );

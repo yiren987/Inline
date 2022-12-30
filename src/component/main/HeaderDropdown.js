@@ -1,4 +1,7 @@
 import React from "react";
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 export default function Dropdown() {
@@ -27,7 +30,7 @@ export default function Dropdown() {
         <ArrowDropDownIcon className="icon" data-dropdown-button />
       </button>
       <div className="dropdowns-menu">
-        <a href="/#">Profile</a>
+        <a href="/update-profile">Update Profile</a>
         <a href="/#">Profile</a>
         <a href="/#">Profile</a>
       </div>

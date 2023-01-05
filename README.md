@@ -1,5 +1,6 @@
 # Quick Demo
-![demo](https://user-images.githubusercontent.com/74392088/210823250-1ea92eea-b8b8-4636-a1ca-a9fdf3fd98eb.gif)
+![demo](https://user-images.githubusercontent.com/74392088/210824078-731c2d14-e42e-41cc-b3d6-6d1e51a8e5d1.gif)
+
 
 # Getting Started with Create React App
 

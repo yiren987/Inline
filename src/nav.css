@@ -192,7 +192,13 @@ p {
 }
 
 /* link inside the dropdown, dropdown-menu after the link */
-.heading .dropdowns .dropdowns.active > .link + .dropdowns-menu {
+/* .heading .dropdowns .dropdowns.active > .link + .dropdowns-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+} */
+
+.heading .dropdowns.active > .link + .dropdowns-menu {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;

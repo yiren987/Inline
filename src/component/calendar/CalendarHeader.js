@@ -19,13 +19,6 @@ export default function CalendarHeader() {
   }
   return (
     <header className="tw-px-4 tw-py-2 tw-flex tw-items-center cal-header">
-      {/* <img src={logo} alt="calendar" className="tw-mr-2 tw-w-30 tw-h-12" /> */}
-      {/* <button
-        onClick={handleReset}
-        className="tw-border tw-rounded tw-py-2 tw-px-4 tw-mr-5"
-      >
-        Today
-      </button> */}
       <button className="tw-arrows" onClick={handlePrevMonth}>
         <span className="tw-material-icons-outlined tw-cursor-pointer tw-text-gray-600 tw-mx-2">
           ←

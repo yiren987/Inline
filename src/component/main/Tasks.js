@@ -4,9 +4,9 @@ import Heading from "./Header";
 
 export const Tasks = () => {
   return (
-    <div>
-      <NavMain />
+    <React.Fragment>
       <Heading />
-    </div>
+        <NavMain />
+    </React.Fragment>
   );
-};
+}

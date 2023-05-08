@@ -5,7 +5,6 @@ import Sidebar from "./Sidebar";
 import Month from "./Month";
 import GlobalContext from "./GlobalContext";
 import EventModal from "./EventModal";
-// import { NavBar } from "../homePage/NavBar";
 import { NavMain } from "../main/NavMain";
 import Heading from "../main/Header";
 import "./styles/calendar.css";

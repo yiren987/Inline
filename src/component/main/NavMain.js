@@ -5,6 +5,8 @@ import Diversity1Icon from "@mui/icons-material/Diversity1";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CustomeLink from "./CustomeLink";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+
 
 export const NavMain = () => {
   return (
@@ -35,6 +37,10 @@ export const NavMain = () => {
             <CustomeLink to="/account" className="navText">
               <AccountCircleIcon className="icon" />
               Account
+            </CustomeLink>
+            <CustomeLink to="/notifications" className="navText">
+              <NotificationsNoneIcon className="icon" />
+              Notifications
             </CustomeLink>
           </ul>
         </nav>

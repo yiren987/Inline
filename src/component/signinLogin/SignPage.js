@@ -14,6 +14,7 @@ import Calendar from "../calendar/Calendar";
 import { Profile } from "../main/Profile";
 import { Account } from "../main/Account";
 import { Tasks } from "../main/Tasks";
+import Notifications from "../main/Notifications";
 
 function SignPage() {
   return (
@@ -99,6 +100,13 @@ function SignPage() {
               </PrivateRoute>
             }
           ></Route>
+          <Route 
+            path="/notifications"
+            element={
+              <PrivateRoute>
+                <Notifications />
+              </PrivateRoute>
+            } />
         </Routes>
       </AuthProvider>
     </div>

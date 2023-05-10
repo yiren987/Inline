@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import Dropdown from "./HeaderDropdown";
@@ -6,11 +6,43 @@ import SortIcon from "@mui/icons-material/Sort";
 import { Button } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import Notifications from "./Notifications";
 
 export default function Heading() {
   const date = new Date();
   const currentTime = date.getHours();
+  const [userName, setUserName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [error, setError] = useState("");
+  const { currentUser, logout } = useAuth();
+  const history = useNavigate();
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  useEffect(() => {
+    // Fetch the user's data from Firestore
+    async function fetchUserData() {
+      try {
+        const userRef = firebase.firestore().collection("users").doc(currentUser.uid);
+        const userData = await userRef.get();
+        if (userData.exists) {
+          setUserName(userData.data().username);
+          setUserAvatar(userData.data().portraitURL);
+        } else {
+          setError("User data not found");
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+
+    if (currentUser) {
+      fetchUserData();
+    }
+  }, [currentUser]);
+
   var dd = String(date.getDate()).padStart(2, "0");
   var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = date.getFullYear();
@@ -25,10 +57,6 @@ export default function Heading() {
   } else {
     greeting = "Good Night";
   }
-
-  const [error, setError] = useState("");
-  const { currentUser, logout } = useAuth();
-  const history = useNavigate();
 
   async function handleLogout() {
     setError("");
@@ -48,16 +76,17 @@ export default function Heading() {
         <h1>{greeting}</h1>
       </div>
       <div className="headingNav">
-        <NotificationsNoneIcon className="icon" />
+        <NotificationsNoneIcon className="icon" onClick={() => { setShowNotifications(!showNotifications); history("/notifications") }} />
+        {/* {showNotifications && <Notifications />} */}
         <MailOutlinedIcon className="icon" />
 
         <img
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+          src={userAvatar}
           alt="avatar"
           className="circle-img user-img"
         />
         <div>
-          <p>User Name</p>
+          <p>{userName}</p>
           <p style={{ color: "gray" }}>{today}</p>
         </div>
         <Dropdown />

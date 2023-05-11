@@ -8,8 +8,8 @@ import 'firebase/compat/auth';
 
 function CreateCard(contact, status) {
   // when send friend request, don't add the friend to the friends collection, just add the friend to the notifications collection
-  
-    const { name, imgURL, phone, email, profileURL } = contact;
+
+  const { name, imgURL, phone, email, profileURL } = contact;
 
   return (
     <Card
@@ -44,35 +44,36 @@ function Friends() {
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };  
+  };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const userRef = firebase.firestore().collection("users").where("username", "==", formData.username);
     const querySnapshot = await userRef.get();
-  
+
     if (querySnapshot.empty) {
       console.error("User not found");
       return;
     }
-  
+
     const user = querySnapshot.docs[0].data();
     const notificationRef = firebase.firestore().collection("notifications").doc(user.email).collection("friend_requests").doc(firebase.auth().currentUser.email);
     const notificationSnapshot = await notificationRef.get();
-  
+
     if (notificationSnapshot.exists) {
       console.error("Friend request already sent");
       return;
     }
-  
+
     await notificationRef.set({
+      type: "friend_request",
       sender: firebase.auth().currentUser.email,
       receiver: user.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       status: "unread"
     });
     console.log("Friend request sent successfully!");
-  
+
     setFormData({
       name: "",
       imgURL: "",
@@ -95,9 +96,9 @@ function Friends() {
         }));
         setUsers(newUsers);
       });
-  
+
     return () => unsubscribe();
-  }, [searchValue]); 
+  }, [searchValue]);
 
   return (
     <div className="containers">

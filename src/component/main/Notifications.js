@@ -140,19 +140,18 @@ function Notifications() {
                           className={`notification-row ${notification.status}`}
                         >
                           <td>
-                            {notification.type === "friend_requests" ? (
+                            {notification.type === "friend_request" ? (
                               <div>
-                                <
-                                  strong>{notification.sender}</strong> sent you a friend request.
+                                <strong>{notification.sender}</strong> wants to be your friend.
                               </div>
-                            ) : null}
+                            ) : (
+                              <div>Unknown notification type</div>
+                            )}
                           </td>
-                          <td>{notification.timestamp ? notification.timestamp
-                            .toDate()
-                            .toLocaleDateString() : null}</td>
+                          <td>{notification.timestamp && notification.timestamp.toDate().toLocaleString()}</td>
                           <td>{notification.status}</td>
                           <td>
-                            {notification.type === "friend_requests" ? (
+                            {notification.type === "friend_request" && (
                               <div>
                                 <button
                                   className="btn btn-success"
@@ -167,16 +166,15 @@ function Notifications() {
                                   Deny
                                 </button>
                               </div>
-                            ) : null}
+                            )}
                           </td>
                         </tr>
                       )) : (
                         <tr>
-                          <td colSpan="4" className="text-center">
-                            No notifications to display
-                          </td>
+                          <td colSpan="4">No notifications</td>
                         </tr>
                       )}
+
                     </tbody>
                   </table>
                   <div className="card-footer">

@@ -6,78 +6,89 @@ import Heading from "./Header";
 import { NavMain } from "./NavMain";
 
 function Notifications() {
+  // inside the notifications collection, -> document -> friend_request collections
+  // -> document -> sender, receiver, timestamp, status
+
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection("notifications")
-      .where("receiver", "==", firebase.auth().currentUser.email)
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        const newNotifications = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setNotifications(newNotifications);
-      });
+    const currentUserEmail = firebase.auth().currentUser.email;
+    const unsubscribe = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").onSnapshot((snapshot) => {
+      const newNotifications = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setNotifications(newNotifications);
+    });
 
     return () => unsubscribe();
   }, []);
 
-const handleAcceptFriendRequest = async (notification) => {
+  const handleAcceptFriendRequest = async (notification) => {
 
-    // // Add the sender to the current user's friends list
-    // const currentUserEmail = firebase.auth().currentUser.email;
-    // await firebase.firestore().collection("users").doc(currentUserEmail).update({
-    //   friends: firebase.firestore.FieldValue.arrayUnion(notification.sender)
-    // });
+    // users collection contains users with their email address, 
+    // and that conatins some fields such as email, username, portraitURL, and contains another friends collection
+    // inside that friends collection, there is a document for each friend, and that document contains the status of the friend request
+    // such email, username, portraitURL, and status
+    // status can be "pending", "accepted", or "denied"
+    // if the status is "pending", then the friend request is still pending
+    // if the status is "accepted", then the friend request is accepted
+    // if the status is "denied", then the friend request is denied
 
-    // // Update the friend request notification to reflect that it was accepted
-    // await firebase.firestore().collection("notifications").doc(notification.id).update({
-    //   status: "accepted"
-    // });
-
-    // // Add the current user to the sender's friends list
-    // await firebase.firestore().collection("users").doc(notification.sender).update({
-    //     friends: firebase.firestore.FieldValue.arrayUnion(currentUserEmail)
-    // });
-
-  // Add the sender to the current user's friends list
-  const currentUserEmail = firebase.auth().currentUser.email;
-  await firebase.firestore().collection("users").doc(currentUserEmail).update({
-    friends: firebase.firestore.FieldValue.arrayUnion(notification.sender)
-  });
-
-  // Update the friend request notification to reflect that it was accepted
-  await firebase.firestore().collection("notifications").doc(notification.id).update({
-    status: "accepted"
-  });
-
-  // Add the current user to the sender's friends list
-  const senderDoc = await firebase.firestore().collection("users").doc(notification.sender).get();
-  if (senderDoc.exists) {
-    await firebase.firestore().collection("users").doc(notification.sender).update({
-      friends: firebase.firestore.FieldValue.arrayUnion(currentUserEmail)
+    // add the friend to the friends collection inside the users collection
+    const currentUserEmail = firebase.auth().currentUser.email;
+    const currentUserDoc = await firebase.firestore().collection("users").doc(currentUserEmail).get();
+    const currentUserFriends = currentUserDoc.data().friends;
+    const updatedCurrentUserFriends = [...currentUserFriends, notification.sender];
+    await firebase.firestore().collection("users").doc(currentUserEmail).update({
+      friends: updatedCurrentUserFriends
     });
-  } else {
-    await firebase.firestore().collection("users").doc(notification.sender).set({
-      email: notification.sender,
-      friends: [currentUserEmail]
+
+    // update friend_requests collection inside the notifications collection, which update the status for that request to "accepted"
+    const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
+    await currentUserNotificationRef.update({
+      status: "accepted"
     });
-  }
-};
+
+    // update both the sender and receiver notifications to reflect that the request was accepted
+    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender);
+    await senderNotificationRef.set({
+      type: "friend_request_accepted",
+      sender: firebase.auth().currentUser.email,
+      receiver: notification.sender,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "unread"
+    });
+
+    const receiverNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail);
+    await receiverNotificationRef.set({
+      type: "friend_request_accepted",
+      sender: firebase.auth().currentUser.email,
+      receiver: currentUserEmail,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "unread"
+    });
+
+  };
 
 
   const handleDenyFriendRequest = async (notification) => {
-    // Update the friend request notification to reflect that it was denied
-    await firebase.firestore().collection("notifications").doc(notification.id).update({
-        status: "denied"
+    // update friend_requests collection inside the notifications collection, which update the status for that request to "denied"
+    const currentUserEmail = firebase.auth().currentUser.email;
+    const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
+    await currentUserNotificationRef.update({
+      status: "denied"
     });
 
-    // delete so that user are able to resend friend request
-    await firebase.firestore().collection("notifications").doc(notification.id).delete();
-    
+    // only update the sender notification to reflect that the request was denied
+    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender);
+    await senderNotificationRef.set({
+      type: "friend_request_denied",
+      sender: firebase.auth().currentUser.email,
+      receiver: notification.sender,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "unread"
+    });
   };
 
   const handleNotificationClick = async (notification) => {
@@ -86,23 +97,20 @@ const handleAcceptFriendRequest = async (notification) => {
       await firebase.firestore().collection("notifications").doc(notification.id).update({
         status: "read"
       });
-    }      
+    }
 
   };
 
   const handleClearNotifications = async () => {
+    // delete all notifications from the notifications collection
     const currentUserEmail = firebase.auth().currentUser.email;
-    const notificationsRef = firebase.firestore().collection("notifications")
-      .where("receiver", "==", currentUserEmail);
-    
-    const notificationsSnapshot = await notificationsRef.get();
+    const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests");
+    const snapshot = await currentUserNotificationRef.get();
+    snapshot.forEach((doc) => {
+      doc.ref.delete();
+    }
+    );
 
-    const batch = firebase.firestore().batch();
-    notificationsSnapshot.forEach((doc) => {
-      batch.update(doc.ref, {status: "read"});
-    });
-
-    await batch.commit();
   };
 
   return (
@@ -132,61 +140,61 @@ const handleAcceptFriendRequest = async (notification) => {
                           className={`notification-row ${notification.status}`}
                         >
                           <td>
-                            {notification.type === "friend_request" ? (
+                            {notification.type === "friend_requests" ? (
                               <div>
                                 <
-                                    strong>{notification.sender}</strong> sent you a friend request.
-                                </div>
+                                  strong>{notification.sender}</strong> sent you a friend request.
+                              </div>
                             ) : null}
-                            </td>
-                            <td>{notification.timestamp ? notification.timestamp
-                                .toDate()
-                                .toLocaleDateString() : null}</td>
-                            <td>{notification.status}</td>
-                            <td>
-                                {notification.type === "friend_request" ? (
-                                    <div>
-                                        <button
-                                            className="btn btn-success"
-                                            onClick={() => handleAcceptFriendRequest(notification)}
-                                        >
-                                            Accept
-                                        </button>
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() => handleDenyFriendRequest(notification)}
-                                        >
-                                            Deny
-                                        </button>
-                                    </div>
-                                ) : null}
-                            </td>
+                          </td>
+                          <td>{notification.timestamp ? notification.timestamp
+                            .toDate()
+                            .toLocaleDateString() : null}</td>
+                          <td>{notification.status}</td>
+                          <td>
+                            {notification.type === "friend_requests" ? (
+                              <div>
+                                <button
+                                  className="btn btn-success"
+                                  onClick={() => handleAcceptFriendRequest(notification)}
+                                >
+                                  Accept
+                                </button>
+                                <button
+                                  className="btn btn-danger"
+                                  onClick={() => handleDenyFriendRequest(notification)}
+                                >
+                                  Deny
+                                </button>
+                              </div>
+                            ) : null}
+                          </td>
                         </tr>
-                        )) : (
-                            <tr>
-                                <td colSpan="4" className="text-center">
-                                    No notifications to display
-                                </td>
-                            </tr>
-                        )}
+                      )) : (
+                        <tr>
+                          <td colSpan="4" className="text-center">
+                            No notifications to display
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
-                    </table>
-                    <div className="card-footer">
-                        <button
-                            className="btn btn-danger"
-                            onClick={handleClearNotifications}
-                        >
-                            Clear Notifications
-                        </button>
-                    </div>
+                  </table>
+                  <div className="card-footer">
+                    <button
+                      className="btn btn-danger"
+                      onClick={handleClearNotifications}
+                    >
+                      Clear Notifications
+                    </button>
+                  </div>
                 </div>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
-    );
+  );
 }
 
 export default Notifications;

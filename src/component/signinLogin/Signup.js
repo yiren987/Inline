@@ -9,6 +9,11 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 
 export default function Signup() {
+
+  // users collection contains users with their email address, 
+  // and that conatins some fields such as email, username, portraitURL, and contains another friends collection
+  // inside that friends collection
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -28,27 +33,42 @@ export default function Signup() {
       const password = passwordRef.current.value;
       const username = usernameRef.current.value;
       const portrait = portraitRef.current.files[0];
-
+  
       // Signup the user with email and password
       await signup(email, password);
-
+  
       // Save the username and portrait to the database
       const user = firebase.auth().currentUser;
       const storageRef = firebase.storage().ref(`users/${user.uid}/portrait.jpg`);
       const snapshot = await storageRef.put(portrait);
       const portraitURL = await snapshot.ref.getDownloadURL();
-      await firebase.firestore().collection("users").doc(user.uid).set({
+  
+      const userData = {
         email: email,
         username: username,
         portraitURL: portraitURL
-      });
-
+      };
+  
+      await firebase.firestore().collection("users").doc(user.uid).set(userData);
+  
+      // Create the friends collection for the user
+      const friendsCollection = firebase.firestore().collection("users").doc(user.uid).collection("friends");
+  
+      // Add the current user as the first friend to the collection
+      const currentUserData = {
+        email: email,
+        username: username,
+        portraitURL: portraitURL
+      };
+      await friendsCollection.doc(user.uid).set(currentUserData);
+  
       navigate("/dashboard");
     } catch (e) {
       setError(e.message);
     }
     setLoading(false);
   };
+  
 
   return (
     <>

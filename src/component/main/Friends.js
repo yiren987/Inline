@@ -7,7 +7,9 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 
 function CreateCard(contact, status) {
-  const { name, imgURL, phone, email, profileURL } = contact;
+  // when send friend request, don't add the friend to the friends collection, just add the friend to the notifications collection
+  
+    const { name, imgURL, phone, email, profileURL } = contact;
 
   return (
     <Card
@@ -55,26 +57,21 @@ function Friends() {
     }
   
     const user = querySnapshot.docs[0].data();
-    const friendRef = firebase.firestore().collection("friends").doc(user.email);
-    const friendSnapshot = await friendRef.get();
+    const notificationRef = firebase.firestore().collection("notifications").doc(user.email).collection("friend_requests").doc(firebase.auth().currentUser.email);
+    const notificationSnapshot = await notificationRef.get();
   
-    if (friendSnapshot.exists) {
-      console.error("Friend already added");
+    if (notificationSnapshot.exists) {
+      console.error("Friend request already sent");
       return;
     }
   
-    await friendRef.set({ ...user, status: "pending" });
-    console.log("Friend request sent successfully!");
-  
-    const notificationRef = firebase.firestore().collection("notifications").doc(user.email);
     await notificationRef.set({
-      type: "friend_request",
       sender: firebase.auth().currentUser.email,
       receiver: user.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       status: "unread"
     });
-    console.log("Notification sent successfully!");
+    console.log("Friend request sent successfully!");
   
     setFormData({
       name: "",
@@ -85,8 +82,6 @@ function Friends() {
       username: ""
     });
   };
-  
-  
 
   useEffect(() => {
     const unsubscribe = firebase
@@ -102,7 +97,7 @@ function Friends() {
       });
   
     return () => unsubscribe();
-  }, [searchValue]);  
+  }, [searchValue]); 
 
   return (
     <div className="containers">

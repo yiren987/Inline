@@ -57,21 +57,56 @@ function Friends() {
     }
 
     const user = querySnapshot.docs[0].data();
-    const notificationRef = firebase.firestore().collection("notifications").doc(user.email).collection("friend_requests").doc(firebase.auth().currentUser.email);
-    const notificationSnapshot = await notificationRef.get();
+    const currentUserEmail = firebase.auth().currentUser.email;
 
-    if (notificationSnapshot.exists) {
+    const senderNotificationRef = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(currentUserEmail)
+      .collection("friend_requests")
+      .doc(user.email);
+
+    const receiverNotificationRef = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(user.email)
+      .collection("friend_requests")
+      .doc(currentUserEmail);
+
+    // Check if the sender already sent a friend request to the receiver
+    const senderNotificationSnapshot = await senderNotificationRef.get();
+
+    if (senderNotificationSnapshot.exists) {
       console.error("Friend request already sent");
       return;
     }
 
-    await notificationRef.set({
-      type: "friend_request",
-      sender: firebase.auth().currentUser.email,
+    // Check if the receiver already has a friend request from the sender
+    const receiverNotificationSnapshot = await receiverNotificationRef.get();
+
+    if (receiverNotificationSnapshot.exists) {
+      console.error("Friend request already exists");
+      return;
+    }
+
+    // Add friend request notification for the sender
+    await senderNotificationRef.set({
+      type: "friend_request_sent",
+      sender: currentUserEmail,
       receiver: user.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       status: "unread"
     });
+
+    // Add friend request notification for the receiver
+    await receiverNotificationRef.set({
+      type: "friend_request",
+      sender: currentUserEmail,
+      receiver: user.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "unread"
+    });
+
     console.log("Friend request sent successfully!");
 
     setFormData({
@@ -83,6 +118,7 @@ function Friends() {
       username: ""
     });
   };
+
 
   useEffect(() => {
     const unsubscribe = firebase

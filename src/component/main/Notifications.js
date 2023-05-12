@@ -24,80 +24,161 @@ function Notifications() {
     return () => unsubscribe();
   }, []);
 
+  // const handleAcceptFriendRequest = async (notification) => {
+  //   try {
+  //     const currentUserEmail = firebase.auth().currentUser.email;
+  //     const currentUserRef = firebase.firestore().collection("users").doc(currentUserEmail);
+  //     const currentUserSnapshot = await currentUserRef.get();
+  //     const currentUserData = currentUserSnapshot.data();
+
+
+  //     // Update the status of the friend request to "accepted" in the currentUser's friend_requests collection
+  //     const currentUserNotificationRef = firebase.firestore().collection("notificaitons").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
+  //     await currentUserNotificationRef.update({
+  //       status: "accepted"
+  //     });
+
+  //     // Add the sender as a friend in the currentUser's friends collection
+  //     const currentUserFriendsRef = currentUserRef.collection("friends").doc(notification.sender);
+
+  //     await currentUserFriendsRef.set({
+  //       email: notification.sender,
+  //       username: notification.username,
+  //       portraitURL: notification.portraitURL,
+  //       status: "accepted",
+  //     });
+
+  //     // Add the currentUser as a friend in the sender's friends collection
+  //     const senderRef = firebase.firestore().collection("users").doc(notification.sender);
+  //     const senderSnapshot = await senderRef.get();
+  //     const senderData = senderSnapshot.data();
+
+  //     const senderFriendsRef = senderRef.collection("friends").doc(currentUserEmail);
+
+  //     await senderFriendsRef.set({
+  //       email: currentUserEmail,
+  //       username: currentUserData.username,
+  //       portraitURL: currentUserData.portraitURL,
+  //       status: "accepted",
+  //     });
+
+  //     // Notify the sender that the friend request was accepted
+  //     const senderNotificationRef = senderRef
+  //       .collection("friend_requests")
+  //       .doc(currentUserEmail);
+
+  //     await senderNotificationRef.set({
+  //       type: "friend_request_accepted",
+  //       sender: currentUserEmail,
+  //       receiver: notification.sender,
+  //       username: currentUserData.username,
+  //       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  //       status: "unread",
+  //     });
+
+  //     console.log("Friend request accepted successfully!");
+  //   } catch (error) {
+  //     console.error("Error accepting friend request:", error);
+  //   }
+  // };
+
+
   const handleAcceptFriendRequest = async (notification) => {
-
-    // users collection contains users with their email address, 
-    // and that conatins some fields such as email, username, portraitURL, and contains another friends collection
-    // inside that friends collection, there is a document for each friend, and that document contains the status of the friend request
-    // such email, username, portraitURL, and status
-    // status can be "pending", "accepted", or "denied"
-    // if the status is "pending", then the friend request is still pending
-    // if the status is "accepted", then the friend request is accepted
-    // if the status is "denied", then the friend request is denied
-
-    // add the friend to the friends collection inside the users collection
     const currentUserEmail = firebase.auth().currentUser.email;
-    const currentUserDoc = await firebase.firestore().collection("users").doc(currentUserEmail).get();
-    const currentUserFriends = currentUserDoc.data().friends;
-    const updatedCurrentUserFriends = [...currentUserFriends, notification.sender];
-    await firebase.firestore().collection("users").doc(currentUserEmail).update({
-      friends: updatedCurrentUserFriends
-    });
+    const currentUserRef = firebase.firestore().collection("users").doc(currentUserEmail);
+    const currentUserSnapshot = await currentUserRef.get();
+    const currentUserData = currentUserSnapshot.data();
 
-    // update friend_requests collection inside the notifications collection, which update the status for that request to "accepted"
-    const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
+    // Update the status of the friend request to "accepted" in the currentUser's friend_requests collection
+    const currentUserNotificationRef = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(currentUserEmail)
+      .collection("friend_requests")
+      .doc(notification.sender);
+
     await currentUserNotificationRef.update({
-      status: "accepted"
+      status: "accepted",
     });
 
-    // update both the sender and receiver notifications to reflect that the request was accepted
-    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender);
+    // Add the sender as a friend in the currentUser's friends collection
+    const currentUserFriendsRef = currentUserRef.collection("friends").doc(notification.sender);
+
+    await currentUserFriendsRef.set({
+      email: notification.sender,
+      username: notification.username, // Make sure the correct username value is provided
+      portraitURL: notification.portraitURL,
+      status: "accepted",
+    });
+
+    // Add the currentUser as a friend in the sender's friends collection
+    const senderRef = firebase.firestore().collection("users").doc(notification.sender);
+    const senderSnapshot = await senderRef.get();
+    const senderData = senderSnapshot.data();
+
+    const senderFriendsRef = senderRef.collection("friends").doc(currentUserEmail);
+
+    await senderFriendsRef.set({
+      email: currentUserEmail,
+      username: currentUserData.username,
+      portraitURL: currentUserData.portraitURL,
+      status: "accepted",
+    });
+
+    // Notify the sender that the friend request was accepted
+    const senderNotificationRef = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(notification.sender)
+      .collection("friend_requests")
+      .doc(currentUserEmail);
+
     await senderNotificationRef.set({
       type: "friend_request_accepted",
-      sender: firebase.auth().currentUser.email,
+      sender: currentUserEmail,
       receiver: notification.sender,
+      username: currentUserData.username,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "unread"
+      status: "unread",
     });
-
-    const receiverNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail);
-    await receiverNotificationRef.set({
-      type: "friend_request_accepted",
-      sender: firebase.auth().currentUser.email,
-      receiver: currentUserEmail,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "unread"
-    });
-
   };
 
 
+
+
+
   const handleDenyFriendRequest = async (notification) => {
-    // update friend_requests collection inside the notifications collection, which update the status for that request to "denied"
+    // Remove the friend_requests document instead of updating its status
     const currentUserEmail = firebase.auth().currentUser.email;
     const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
-    await currentUserNotificationRef.update({
-      status: "denied"
-    });
+    await currentUserNotificationRef.delete();
 
-    // only update the sender notification to reflect that the request was denied
-    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender);
+    // Notify the sender that the request was denied
+    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender).collection("friend_requests").doc(currentUserEmail);
     await senderNotificationRef.set({
       type: "friend_request_denied",
       sender: firebase.auth().currentUser.email,
       receiver: notification.sender,
+      username: notification.username,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       status: "unread"
     });
   };
 
+
   const handleNotificationClick = async (notification) => {
     // Update the status of the notification to "read", so it will no longer be bold, and keep that display on the screen
-    if (notification.status === "unread") {
-      await firebase.firestore().collection("notifications").doc(notification.id).update({
-        status: "read"
-      });
-    }
+    const currentUserEmail = firebase.auth().currentUser.email;
+    const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
+    await currentUserNotificationRef.update({
+      status: "read"
+    });
+
+    // Update the status for sender if receiver has read the notification
+    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender).collection("friend_requests").doc(currentUserEmail);
+    await senderNotificationRef.update({
+      status: "read"
+    });
 
   };
 
@@ -144,10 +225,24 @@ function Notifications() {
                               <div>
                                 <strong>{notification.sender}</strong> wants to be your friend.
                               </div>
-                            ) : (
-                              <div>Unknown notification type</div>
-                            )}
+                            ) : notification.type === "friend_request_sent" ? (
+                              <div>
+                                You sent a friend request to <strong>{notification.receiver}</strong>.
+                              </div>
+                            )
+                              : notification.type === "friend_request_accepted" ? (
+                                <div>
+                                  <strong>{notification.sender}</strong> accepted your friend request.
+                                </div>
+                              ) : notification.type === "friend_request_denied" ? (
+                                <div>
+                                  <strong>{notification.sender}</strong> denied your friend request.
+                                </div>
+                              ) : (
+                                <div>Unknown notification type</div>
+                              )}
                           </td>
+
                           <td>{notification.timestamp && notification.timestamp.toDate().toLocaleString()}</td>
                           <td>{notification.status}</td>
                           <td>

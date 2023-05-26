@@ -52,9 +52,11 @@ function Notifications() {
     }
 
     const senderUserData = senderUserSnapshot.docs[0].data();
+    // console.log("Sender User Data", senderUserData);
+    const senderUserID = senderUserSnapshot.docs[0].id;
 
-    console.log("Sender User Data", senderUserData);
-
+    // console.log("receiverUserID", currentUserID);
+    // console.log("Sender User ID", senderUserID);
 
     // Add the sender as a friend in the currentUser's friends collection
     const currentUserFriendsRef = currentUserRef.collection("friends").doc(notification.sender);
@@ -66,7 +68,8 @@ function Notifications() {
     });
 
     // Add the currentUser as a friend in the sender's friends collection
-    const senderFriendsRef = senderUserRef.collection("friends").doc(currentUserID);
+    const senderFriendsRef = firebase.firestore().collection("users").doc(senderUserID).collection("friends").doc(currentUserEmail);
+
     await senderFriendsRef.set({
       email: currentUserEmail,
       status: "accepted",

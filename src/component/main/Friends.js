@@ -74,11 +74,20 @@ function Friends() {
       .doc(currentUserEmail);
 
     // Check if the sender already sent a friend request to the receiver
+    // if yes and if the type is friend_request_denied, then delete the notification and send a new friend request
+
     const senderNotificationSnapshot = await senderNotificationRef.get();
 
     if (senderNotificationSnapshot.exists) {
-      console.error("Friend request already sent");
-      return;
+      const senderNotificationData = senderNotificationSnapshot.data();
+
+      if (senderNotificationData.type === "friend_request_denied") {
+        await senderNotificationRef.delete();
+        await receiverNotificationRef.delete();
+      } else {
+        console.error("Friend request already sent");
+        return;
+      }
     }
 
     // Check if the receiver already has a friend request from the sender

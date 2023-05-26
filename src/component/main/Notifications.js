@@ -45,21 +45,19 @@ function Notifications() {
 
     const senderUserRef = firebase.firestore().collection("users").where("email", "==", notification.sender);
     const senderUserSnapshot = await senderUserRef.get();
+    const senderUserID = senderUserSnapshot.docs[0].id;
+
+    const senderUserData = senderUserSnapshot.docs[0].data();
+    // console.log("Sender User Data", senderUserData);
 
     if (senderUserSnapshot.empty) {
       console.log("Sender user not found");
       return; // or handle the case when the sender user is not found
     }
 
-    const senderUserData = senderUserSnapshot.docs[0].data();
-    // console.log("Sender User Data", senderUserData);
-    const senderUserID = senderUserSnapshot.docs[0].id;
-
-    // console.log("receiverUserID", currentUserID);
-    // console.log("Sender User ID", senderUserID);
-
     // Add the sender as a friend in the currentUser's friends collection
-    const currentUserFriendsRef = currentUserRef.collection("friends").doc(notification.sender);
+    // const currentUserFriendsRef = currentUserRef.collection("friends").doc(notification.sender);
+    const currentUserFriendsRef = currentUserRef.collection("friends").doc(senderUserID);
     await currentUserFriendsRef.set({
       email: notification.sender,
       status: "accepted",
@@ -68,7 +66,8 @@ function Notifications() {
     });
 
     // Add the currentUser as a friend in the sender's friends collection
-    const senderFriendsRef = firebase.firestore().collection("users").doc(senderUserID).collection("friends").doc(currentUserEmail);
+    // const senderFriendsRef = firebase.firestore().collection("users").doc(senderUserID).collection("friends").doc(currentUserEmail);
+    const senderFriendsRef = firebase.firestore().collection("users").doc(senderUserID).collection("friends").doc(currentUserID);
 
     await senderFriendsRef.set({
       email: currentUserEmail,
@@ -95,29 +94,54 @@ function Notifications() {
     });
   };
 
-
-
-
-
-
-
   const handleDenyFriendRequest = async (notification) => {
-    // Remove the friend_requests document instead of updating its status
+    const currentUserID = firebase.auth().currentUser.uid;
     const currentUserEmail = firebase.auth().currentUser.email;
-    const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
-    await currentUserNotificationRef.delete();
 
-    // Notify the sender that the request was denied
-    const senderNotificationRef = firebase.firestore().collection("notifications").doc(notification.sender).collection("friend_requests").doc(currentUserEmail);
+    // Update the status of the friend request to "denied" in the currentUser's friend_requests collection
+    const currentUserNotificationRef = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(currentUserEmail)
+      .collection("friend_requests")
+      .doc(notification.sender);
+
+    await currentUserNotificationRef.update({
+      status: "denied",
+    });
+
+    const senderUserRef = firebase.firestore().collection("users").where("email", "==", notification.sender);
+    const senderUserSnapshot = await senderUserRef.get();
+
+    if (senderUserSnapshot.empty) {
+      console.log("Sender user not found");
+      return; // or handle the case when the sender user is not found
+    }
+
+    const senderUserData = senderUserSnapshot.docs[0].data();
+
+    // Notify the sender that the friend request was denied
+    const senderNotificationRef = firebase
+      .firestore()
+      .collection("notifications")
+      .doc(notification.sender)
+      .collection("friend_requests")
+      .doc(currentUserEmail);
+
     await senderNotificationRef.set({
       type: "friend_request_denied",
-      sender: firebase.auth().currentUser.email,
+      sender: currentUserEmail,
       receiver: notification.sender,
-      username: notification.username,
+      username: senderUserData.username || "",
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "unread"
+      status: "unread",
     });
+
+    // Delete the notification from the currentUser's friend_requests collection
+    await currentUserNotificationRef.delete();
   };
+
+
 
 
   const handleNotificationClick = async (notification) => {

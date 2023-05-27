@@ -29,10 +29,6 @@ function Friends() {
     username: ""
   });
 
-  const handleChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
@@ -133,26 +129,37 @@ function Friends() {
   }, []);
 
 
-
-
   return (
     <div className="containers">
       <Heading />
       <div className="padd240">
         <NavMain />
-        <div style={{ display: "flex", justifyContent: "center", paddingTop: "10px" }}>
-          <input type="text" value={searchValue} onChange={handleChange} placeholder="Search friends by name" />
-        </div>
-        <form onSubmit={handleFormSubmit}>
-          <input type="text" name="username" value={formData.username} onChange={handleFormChange} placeholder="Username" />
-          <button type="submit">Send Friend Request</button>
+        <form onSubmit={handleFormSubmit} style={{ padding: "10px 5px" }}>
+          <input type="text" style={{ border: "solid 1px rgb(46, 73, 81)", marginRight: "10px" }} name="username" value={formData.username} onChange={handleFormChange} placeholder="Username" />
+          <button
+            type="submit"
+            style={{
+              paddingLeft: "10px",
+              backgroundColor: "#87cbe6",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              padding: "8px 16px",
+              fontSize: "14px",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            Send Friend Request
+          </button>
+
         </form>
         <div className="card-container">
           <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
           {users.map((user) => CreateCard(user, "friend"))}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

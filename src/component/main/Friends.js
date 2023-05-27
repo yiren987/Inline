@@ -7,33 +7,25 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 
 function CreateCard(contact, status) {
-  // when send friend request, don't add the friend to the friends collection, just add the friend to the notifications collection
-
-  const { name, imgURL, phone, email, profileURL } = contact;
+  const { username, portraitURL, email } = contact;
 
   return (
     <Card
       key={contact.id}
       id={contact.id}
-      name={name}
-      img={imgURL}
+      name={username}
+      img={portraitURL}
       email={email}
-      tel={phone}
-      profile={profileURL}
       status={status}
     />
   );
 }
 
+
 function Friends() {
   const [users, setUsers] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [formData, setFormData] = useState({
-    name: "",
-    imgURL: "",
-    phone: "",
-    email: "",
-    profileURL: "",
     username: ""
   });
 
@@ -73,9 +65,6 @@ function Friends() {
       .collection("friend_requests")
       .doc(currentUserEmail);
 
-    // Check if the sender already sent a friend request to the receiver
-    // if yes and if the type is friend_request_denied, then delete the notification and send a new friend request
-
     const senderNotificationSnapshot = await senderNotificationRef.get();
 
     if (senderNotificationSnapshot.exists) {
@@ -90,7 +79,6 @@ function Friends() {
       }
     }
 
-    // Check if the receiver already has a friend request from the sender
     const receiverNotificationSnapshot = await receiverNotificationRef.get();
 
     if (receiverNotificationSnapshot.exists) {
@@ -98,7 +86,6 @@ function Friends() {
       return;
     }
 
-    // Add friend request notification for the sender
     await senderNotificationRef.set({
       type: "friend_request_sent",
       sender: currentUserEmail,
@@ -107,7 +94,6 @@ function Friends() {
       status: "unread"
     });
 
-    // Add friend request notification for the receiver
     await receiverNotificationRef.set({
       type: "friend_request",
       sender: currentUserEmail,
@@ -119,47 +105,51 @@ function Friends() {
     console.log("Friend request sent successfully!");
 
     setFormData({
-      name: "",
-      imgURL: "",
-      phone: "",
-      email: "",
-      profileURL: "",
       username: ""
     });
   };
 
+  // since when user sign up, the user is the first friend of himself
+  // so do not show the current user in the friend list
 
   useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection("users")
-      .where("name", ">=", searchValue)
-      .onSnapshot((snapshot) => {
-        const newUsers = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setUsers(newUsers);
-      });
+    const currentUser = firebase.auth().currentUser;
 
-    return () => unsubscribe();
-  }, [searchValue]);
+    if (currentUser) {
+      const unsubscribe = firebase
+        .firestore()
+        .collection("users")
+        .where(firebase.firestore.FieldPath.documentId(), "!=", currentUser.uid)
+        .onSnapshot((snapshot) => {
+          const newUsers = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setUsers(newUsers);
+        });
+
+      return () => unsubscribe();
+    }
+  }, []);
+
+
+
 
   return (
     <div className="containers">
       <Heading />
       <div className="padd240">
         <NavMain />
-        <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", paddingTop: "10px" }}>
           <input type="text" value={searchValue} onChange={handleChange} placeholder="Search friends by name" />
         </div>
         <form onSubmit={handleFormSubmit}>
           <input type="text" name="username" value={formData.username} onChange={handleFormChange} placeholder="Username" />
-          <button type="submit">Add Friend</button>
+          <button type="submit">Send Friend Request</button>
         </form>
-        <div className="cards">
-          {users.map((user) => CreateCard(user, "add"))}
+        <div className="card-container">
+          <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
+          {users.map((user) => CreateCard(user, "friend"))}
         </div>
       </div>
     </div>

@@ -28,6 +28,8 @@ function Friends() {
     username: ""
   });
 
+  const [showNotifications, setShowNotifications] = useState(false);
+
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
@@ -97,7 +99,12 @@ function Friends() {
       status: "unread"
     });
 
-    console.log("Friend request sent successfully!");
+    // console.log("Friend request sent successfully!");
+    setShowNotifications(true);
+
+    setTimeout(() => {
+      setShowNotifications(false);
+    }, 3000);
 
     setFormData({
       username: ""
@@ -159,6 +166,21 @@ function Friends() {
           {users.map((user) => CreateCard(user, "friend"))}
         </div>
       </div>
+      {showNotifications && (
+        <div
+          className="alert alert-success mt-3"
+          style={{
+            position: "fixed",
+            left: "50%",
+            opacity: "0.5"
+          }}
+          role="alert"
+        >
+          <p>Friend request sent successfully!</p>
+        </div>
+      )}
+
+
     </div>
   );
 }

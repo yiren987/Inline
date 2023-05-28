@@ -51,11 +51,11 @@ export default function Heading() {
   let greeting;
 
   if (currentTime < 12) {
-    greeting = "Good Morning";
+    greeting = `Good Morning, ${userName}`;
   } else if (currentTime < 18) {
-    greeting = "Good Afternoon";
+    greeting = `Good Afternoon, ${userName}`;
   } else {
-    greeting = "Good Night";
+    greeting = `Good Night, ${userName}`;
   }
 
   async function handleLogout() {

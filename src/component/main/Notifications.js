@@ -137,17 +137,37 @@ function Notifications() {
       status: "unread",
     });
 
-    // Delete the notification from the currentUser's friend_requests collection
-    await currentUserNotificationRef.delete();
+    // Retrieve the updated notification data after denial
+    const updatedNotificationSnapshot = await currentUserNotificationRef.get();
+    const updatedNotification = updatedNotificationSnapshot.data();
+
+    // Update the local notifications state with the updated notification data
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((prevNotification) =>
+        prevNotification.id === notification.id ? updatedNotification : prevNotification
+      )
+    );
   };
-
-
-
 
   const handleNotificationClick = async (notification) => {
     // Update the status of the notification to "read", so it will no longer be bold, and keep that display on the screen
+    // but if user clicks on the button which accepted or denied the friend request
+    // then don't change the status to "read" because the user is already on the page
+
     const currentUserEmail = firebase.auth().currentUser.email;
+    let currentStatus = notification.status;
     const currentUserNotificationRef = firebase.firestore().collection("notifications").doc(currentUserEmail).collection("friend_requests").doc(notification.sender);
+
+    if (currentStatus === "read") {
+      return;
+    } else if (currentStatus === "unread") {
+      currentStatus = "read";
+    } else if (currentStatus === "accepted") {
+      return;
+    } else if (currentStatus === "denied") {
+      return;
+    }
+
     await currentUserNotificationRef.update({
       status: "read"
     });
@@ -157,7 +177,6 @@ function Notifications() {
     await senderNotificationRef.update({
       status: "read"
     });
-
   };
 
   const handleClearNotifications = async () => {
@@ -169,7 +188,6 @@ function Notifications() {
       doc.ref.delete();
     }
     );
-
   };
 
   return (
@@ -192,23 +210,23 @@ function Notifications() {
                       </tr>
                     </thead>
                     <tbody>
-                      {notifications.length > 0 ? notifications.map((notification) => (
-                        <tr
-                          key={notification.id}
-                          onClick={() => handleNotificationClick(notification)}
-                          className={`notification-row ${notification.status}`}
-                        >
-                          <td>
-                            {notification.type === "friend_request" ? (
-                              <div>
-                                <strong>{notification.sender}</strong> wants to be your friend.
-                              </div>
-                            ) : notification.type === "friend_request_sent" ? (
-                              <div>
-                                You sent a friend request to <strong>{notification.receiver}</strong>.
-                              </div>
-                            )
-                              : notification.type === "friend_request_accepted" ? (
+                      {notifications.length > 0 ? (
+                        notifications.map((notification) => (
+                          <tr
+                            key={notification.id}
+                            onClick={() => handleNotificationClick(notification)}
+                            className={`notification-row ${notification.status}`}
+                          >
+                            <td>
+                              {notification.type === "friend_request" ? (
+                                <div>
+                                  <strong>{notification.sender}</strong> wants to be your friend.
+                                </div>
+                              ) : notification.type === "friend_request_sent" ? (
+                                <div>
+                                  You sent a friend request to <strong>{notification.receiver}</strong>.
+                                </div>
+                              ) : notification.type === "friend_request_accepted" ? (
                                 <div>
                                   <strong>{notification.sender}</strong> accepted your friend request.
                                 </div>
@@ -219,35 +237,37 @@ function Notifications() {
                               ) : (
                                 <div>Unknown notification type</div>
                               )}
-                          </td>
-
-                          <td>{notification.timestamp && notification.timestamp.toDate().toLocaleString()}</td>
-                          <td>{notification.status}</td>
-                          <td>
-                            {notification.type === "friend_request" && (
-                              <div>
-                                <button
-                                  className="btn btn-success"
-                                  onClick={() => handleAcceptFriendRequest(notification)}
-                                >
-                                  Accept
-                                </button>
-                                <button
-                                  className="btn btn-danger"
-                                  onClick={() => handleDenyFriendRequest(notification)}
-                                >
-                                  Deny
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      )) : (
+                            </td>
+                            <td>
+                              {notification.timestamp && notification.timestamp.toDate().toLocaleString()}
+                            </td>
+                            <td>{notification.status}</td>
+                            <td>
+                              {notification.type === "friend_request" &&
+                                (notification.status === "unread" || notification.status === "read") && ( // Check if the status is "unread"
+                                  <div>
+                                    <button
+                                      className="btn btn-success"
+                                      onClick={() => handleAcceptFriendRequest(notification)}
+                                    >
+                                      Accept
+                                    </button>
+                                    <button
+                                      className="btn btn-danger"
+                                      onClick={() => handleDenyFriendRequest(notification)}
+                                    >
+                                      Deny
+                                    </button>
+                                  </div>
+                                )}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
                         <tr>
                           <td colSpan="4">No notifications</td>
                         </tr>
                       )}
-
                     </tbody>
                   </table>
                   <div className="card-footer">
@@ -266,6 +286,7 @@ function Notifications() {
       </div>
     </div>
   );
+
 }
 
 export default Notifications;

@@ -21,7 +21,6 @@ function CreateCard(contact, status) {
   );
 }
 
-
 function Friends() {
   const [users, setUsers] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -115,19 +114,20 @@ function Friends() {
       const unsubscribe = firebase
         .firestore()
         .collection("users")
-        .where(firebase.firestore.FieldPath.documentId(), "!=", currentUser.uid)
+        .doc(currentUser.uid)
+        .collection("friends")
+        .where("status", "==", "accepted")
         .onSnapshot((snapshot) => {
-          const newUsers = snapshot.docs.map((doc) => ({
+          const newFriends = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data()
           }));
-          setUsers(newUsers);
+          setUsers(newFriends);
         });
 
       return () => unsubscribe();
     }
   }, []);
-
 
   return (
     <div className="containers">
@@ -159,7 +159,7 @@ function Friends() {
           {users.map((user) => CreateCard(user, "friend"))}
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

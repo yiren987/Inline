@@ -227,3 +227,10 @@ p {
   text-decoration: none;
   color: black;
 }
+
+
+.card .friendList .deleteButton {
+  position: absolute;
+  right: 20px;
+  
+}

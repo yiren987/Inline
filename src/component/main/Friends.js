@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import { NavMain } from "./NavMain";
 import Heading from "./Header";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/auth';
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/auth";
 
 function CreateCard(contact, status) {
   const { username, portraitURL, email } = contact;
@@ -25,7 +25,7 @@ function Friends() {
   const [users, setUsers] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [formData, setFormData] = useState({
-    username: ""
+    username: "",
   });
 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -37,7 +37,10 @@ function Friends() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    const userRef = firebase.firestore().collection("users").where("username", "==", formData.username);
+    const userRef = firebase
+      .firestore()
+      .collection("users")
+      .where("username", "==", formData.username);
     const querySnapshot = await userRef.get();
 
     if (querySnapshot.empty) {
@@ -88,7 +91,7 @@ function Friends() {
       sender: currentUserEmail,
       receiver: user.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "unread"
+      status: "unread",
     });
 
     await receiverNotificationRef.set({
@@ -96,7 +99,7 @@ function Friends() {
       sender: currentUserEmail,
       receiver: user.email,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "unread"
+      status: "unread",
     });
 
     // console.log("Friend request sent successfully!");
@@ -107,7 +110,7 @@ function Friends() {
     }, 3000);
 
     setFormData({
-      username: ""
+      username: "",
     });
   };
 
@@ -127,7 +130,7 @@ function Friends() {
         .onSnapshot((snapshot) => {
           const newFriends = snapshot.docs.map((doc) => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
           }));
           setUsers(newFriends);
         });
@@ -142,7 +145,14 @@ function Friends() {
       <div className="padd240">
         <NavMain />
         <form onSubmit={handleFormSubmit} style={{ padding: "10px 5px" }}>
-          <input type="text" style={{ border: "solid 1px rgb(46, 73, 81)", marginRight: "10px" }} name="username" value={formData.username} onChange={handleFormChange} placeholder="Username" />
+          <input
+            type="text"
+            style={{ border: "solid 1px rgb(46, 73, 81)", marginRight: "10px" }}
+            name="username"
+            value={formData.username}
+            onChange={handleFormChange}
+            placeholder="Username"
+          />
           <button
             type="submit"
             style={{
@@ -159,7 +169,6 @@ function Friends() {
           >
             Send Friend Request
           </button>
-
         </form>
         <div className="card-container">
           <h1 style={{ textAlign: "center", margin: "5px" }}>Friends</h1>
@@ -172,15 +181,13 @@ function Friends() {
           style={{
             position: "fixed",
             left: "50%",
-            opacity: "0.5"
+            opacity: "0.5",
           }}
           role="alert"
         >
           <p>Friend request sent successfully!</p>
         </div>
       )}
-
-
     </div>
   );
 }

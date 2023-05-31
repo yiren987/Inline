@@ -14,6 +14,7 @@ function Card(props) {
         >
           {props.name}
         </a>
+        <button className="btn btn-primary deleteButton">Delete</button>
       </div>
     </div>
   );

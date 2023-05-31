@@ -1,6 +1,24 @@
+<<<<<<< HEAD
 # Quick Demo
 ### Home Page
 
+=======
+# Demo
+### Home
+![Home1](https://github.com/XingchengH/Inline-schedule/assets/74392088/7fe85ada-172d-4c60-abdc-7e96f5038f79)
+![Home2](https://github.com/XingchengH/Inline-schedule/assets/74392088/3850ee2d-d0ef-4ad5-9d88-6333ef24a829)
+
+### Calendar
+![Calendar](https://github.com/XingchengH/Inline-schedule/assets/74392088/189046db-8ce7-4b1f-b7ae-d225095d8732)
+
+### User2 Page
+
+![User2)](https://github.com/XingchengH/Inline-schedule/assets/74392088/efbb9e1a-da6c-41d9-953d-9de95ff614f1)
+
+### User1 Page 
+
+![User1](https://github.com/XingchengH/Inline-schedule/assets/74392088/01486da6-189b-4ca8-9e53-7a4258de13cf)
+>>>>>>> cfde953f08b8307c5214a011d825c9ce304d01b3
 
 
 
